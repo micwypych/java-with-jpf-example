@@ -21,6 +21,7 @@ install:
   - ls ..
   - cd .. && git clone https://github.com/micwypych/jpf-config
   - jpf-config/script.sh
+  - cd java-with-jpf-example
 
 script:
   - pwd
