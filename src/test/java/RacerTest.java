@@ -1,9 +1,10 @@
 import gov.nasa.jpf.annotation.JPFConfig;
+import gov.nasa.jpf.util.TypeRef;
 import gov.nasa.jpf.util.test.TestJPF;
 import gov.nasa.jpf.vm.*;
 import org.junit.Test;
 
-//WARN: nie dziala ten sposob dodania listenera
+//WARN: this approach does not work
 @JPFConfig({"listener+=,gov.nasa.jpf.listener.PreciseRaceDetector,MyListener"})
 public class RacerTest extends TestJPF {
     static class Ptr {
@@ -11,12 +12,12 @@ public class RacerTest extends TestJPF {
     }
 
     @Test
-    public void testRacer() throws InterruptedException {
-        //WARN: nie dziala ten sposob dodania listenera
+    public void testRacerWithCustomJpfListener() throws InterruptedException {
+        //WARN: this approach does not work neither
         Verify.setProperties("listener+=,gov.nasa.jpf.listener.PreciseRaceDetector");
         Verify.setProperties("listener+=,MyListener");
-        //WARN: dopiero ten sposob dziala
-        if (verifyNoPropertyViolation("java-with-jpf-example.jpf")) {
+        //WARN: this approach works correctly so the setting file is looked for
+        if (verifyPropertyViolation(new TypeRef("gov.nasa.jpf.listener.PreciseRaceDetector"),"java-with-jpf-example.jpf")) {
             Ptr x = new Ptr();
             x.value = 10;
             Runnable r = () -> {
