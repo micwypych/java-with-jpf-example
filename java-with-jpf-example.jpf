@@ -1,0 +1,1 @@
+listener=gov.nasa.jpf.listener.PreciseRaceDetector,listeners.MyListener
